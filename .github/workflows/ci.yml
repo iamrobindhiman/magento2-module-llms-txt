@@ -44,7 +44,18 @@ jobs:
         run: echo "path=$(composer global config bin-dir --absolute --quiet)" >> "$GITHUB_OUTPUT"
 
       - name: Run PHPCS against Magento2 standard
-        run: ${{ steps.composer-bin.outputs.path }}/phpcs --standard=Magento2 --extensions=php --severity=8 -p .
+        # --error-severity=1 : fail on any error
+        # --warning-severity=8 : show high-severity warnings only (info-level)
+        # --runtime-set ignore_warnings_on_exit 1 : don't fail build on warnings-only
+        # Warnings are surfaced for review but don't block the build.
+        run: |
+          ${{ steps.composer-bin.outputs.path }}/phpcs \
+            --standard=Magento2 \
+            --extensions=php \
+            --error-severity=1 \
+            --warning-severity=8 \
+            --runtime-set ignore_warnings_on_exit 1 \
+            -p .
 
   syntax:
     name: PHP Syntax Check
