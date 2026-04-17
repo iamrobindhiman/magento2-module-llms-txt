@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+._*
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Composer
+/vendor/
+composer.lock
+
+# PHPUnit
+/phpunit.result.cache
+.phpunit.cache/
+.phpunit.result.cache
+
+# Magento generated artifacts (not applicable inside the module but listed for safety)
+/var/
+/generated/
+/pub/static/
+/pub/media/
+
+# Logs
+*.log
+
+# Archives
+*.zip
+*.tar
+*.tar.gz

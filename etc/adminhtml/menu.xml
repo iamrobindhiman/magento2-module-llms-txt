@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="RKD_LlmsTxt::main"
+             title="LLMs.txt"
+             module="RKD_LlmsTxt"
+             parent="Magento_Backend::marketing"
+             sortOrder="100"
+             resource="RKD_LlmsTxt::manage"/>
+        <add id="RKD_LlmsTxt::generate"
+             title="Generate Files"
+             module="RKD_LlmsTxt"
+             parent="RKD_LlmsTxt::main"
+             sortOrder="10"
+             action="rkd_llmstxt/dashboard/index"
+             resource="RKD_LlmsTxt::generate"/>
+        <add id="RKD_LlmsTxt::preview"
+             title="Preview Output"
+             module="RKD_LlmsTxt"
+             parent="RKD_LlmsTxt::main"
+             sortOrder="20"
+             action="rkd_llmstxt/preview/index"
+             resource="RKD_LlmsTxt::preview"/>
+        <add id="RKD_LlmsTxt::config"
+             title="Configuration"
+             module="RKD_LlmsTxt"
+             parent="RKD_LlmsTxt::main"
+             sortOrder="30"
+             action="adminhtml/system_config/edit/section/rkd_llmstxt"
+             resource="RKD_LlmsTxt::config"/>
+    </menu>
+</config>

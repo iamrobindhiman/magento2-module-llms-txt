@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="rkd" translate="label" sortOrder="400">
+            <label>RKD Extensions</label>
+        </tab>
+        <section id="rkd_llmstxt" translate="label" type="text" sortOrder="10"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>LLMs.txt Generator</label>
+            <tab>rkd</tab>
+            <resource>RKD_LlmsTxt::config</resource>
+
+            <!-- General Settings -->
+            <group id="general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="auto_regeneration" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Auto-Regeneration</label>
+                    <comment>Automatically regenerate files on a schedule</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cron_schedule" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Regeneration Schedule</label>
+                    <source_model>RKD\LlmsTxt\Model\Config\Source\CronSchedule</source_model>
+                    <depends>
+                        <field id="auto_regeneration">1</field>
+                    </depends>
+                </field>
+                <field id="store_description" translate="label comment" type="textarea" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Description for AI</label>
+                    <comment><![CDATA[Describe your store in 1-2 sentences for AI assistants. Example: "Luma is an activewear and fitness retailer offering clothing, gear, and accessories for men and women." Leave empty for auto-generated description.]]></comment>
+                </field>
+                <field id="generate_now" translate="label" sortOrder="50"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Manual Generation</label>
+                    <frontend_model>RKD\LlmsTxt\Block\Adminhtml\System\Config\GenerateButton</frontend_model>
+                </field>
+            </group>
+
+            <!-- Content Sections -->
+            <group id="content" translate="label" type="text" sortOrder="20"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Content Sections</label>
+                <field id="include_cms_pages" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include CMS Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="include_categories" translate="label" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Categories</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="category_depth_limit" translate="label comment" type="text" sortOrder="25"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Category Depth Limit</label>
+                    <comment>Maximum category tree depth to include (default: 3)</comment>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="include_categories">1</field>
+                    </depends>
+                </field>
+                <field id="include_products" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_limit" translate="label comment" type="text" sortOrder="35"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Product Limit</label>
+                    <comment>Maximum number of products to include. Set to 0 for unlimited (full catalog). Default: 0.</comment>
+                    <validate>validate-digits</validate>
+                    <depends>
+                        <field id="include_products">1</field>
+                    </depends>
+                </field>
+                <field id="product_sort_order" translate="label" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Product Sort Order</label>
+                    <source_model>RKD\LlmsTxt\Model\Config\Source\ProductSortOrder</source_model>
+                    <depends>
+                        <field id="include_products">1</field>
+                    </depends>
+                </field>
+                <field id="include_metadata" translate="label" type="select" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Store Metadata</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="exclude_out_of_stock" translate="label comment" type="select" sortOrder="60"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Exclude Out-of-Stock Products</label>
+                    <comment>Prevent out-of-stock products from appearing in the LLMs.txt output</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <!-- llms-full.txt Settings -->
+            <group id="full_txt" translate="label" type="text" sortOrder="30"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>llms-full.txt Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Generate llms-full.txt</label>
+                    <comment>Generate the complete content file alongside llms.txt</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="max_file_size_mb" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Max File Size (MB)</label>
+                    <comment>Maximum file size for llms-full.txt (default: 5MB)</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="content_depth" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Content Depth</label>
+                    <source_model>RKD\LlmsTxt\Model\Config\Source\ContentDepth</source_model>
+                </field>
+            </group>
+
+            <!-- Product Data Settings -->
+            <group id="product_data" translate="label" type="text" sortOrder="40"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Data</label>
+                <field id="include_price" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Prices</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="include_sku" translate="label" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include SKU</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="include_short_description" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Include Short Description</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="extra_attributes" translate="label comment" type="multiselect" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Additional Product Attributes</label>
+                    <comment><![CDATA[Select which product attributes to include in the output. Choose attributes relevant to your niche (e.g., gender and material for apparel, brand and warranty for electronics, ingredients for food).]]></comment>
+                    <source_model>RKD\LlmsTxt\Model\Config\Source\ProductAttributes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+
+            <!-- Validation -->
+            <group id="validation" translate="label" type="text" sortOrder="50"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Validation</label>
+                <field id="validate_on_generation" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Validate on Generation</label>
+                    <comment>Run spec validation after each generation</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="block_on_errors" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Block Generation on Errors</label>
+                    <comment>Prevent writing files if validation errors are found</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <!-- Robots.txt -->
+            <group id="robots_txt" translate="label" type="text" sortOrder="60"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Robots.txt Integration</label>
+                <field id="auto_inject" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Auto-Inject into robots.txt</label>
+                    <comment>Automatically add llms.txt path reference to your robots.txt</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

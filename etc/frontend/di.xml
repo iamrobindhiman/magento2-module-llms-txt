@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Register custom router for /llms.txt and /llms-full.txt (frontend scope) -->
+    <type name="Magento\Framework\App\RouterList">
+        <arguments>
+            <argument name="routerList" xsi:type="array">
+                <item name="rkd_llmstxt" xsi:type="array">
+                    <item name="class" xsi:type="string">RKD\LlmsTxt\Controller\Router</item>
+                    <item name="disable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="string">22</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

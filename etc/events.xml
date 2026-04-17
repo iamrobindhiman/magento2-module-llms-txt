@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <!-- Product changes (title, price, status, attributes) -->
+    <event name="catalog_product_save_after">
+        <observer name="rkd_llmstxt_product_change" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- Product deletion -->
+    <event name="catalog_product_delete_after">
+        <observer name="rkd_llmstxt_product_delete" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- Inventory/stock changes -->
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="rkd_llmstxt_stock_change" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- CMS page changes -->
+    <event name="cms_page_save_after">
+        <observer name="rkd_llmstxt_cms_change" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- CMS page deletion -->
+    <event name="cms_page_delete_after">
+        <observer name="rkd_llmstxt_cms_delete" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- Category changes -->
+    <event name="catalog_category_save_after">
+        <observer name="rkd_llmstxt_category_change" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+
+    <!-- Category deletion -->
+    <event name="catalog_category_delete_after">
+        <observer name="rkd_llmstxt_category_delete" instance="RKD\LlmsTxt\Observer\EntityChangeObserver"/>
+    </event>
+</config>

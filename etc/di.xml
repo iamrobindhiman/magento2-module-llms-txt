@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Service contract bindings -->
+    <preference for="RKD\LlmsTxt\Api\LlmsTxtGeneratorInterface"
+                type="RKD\LlmsTxt\Model\Generator"/>
+
+    <preference for="RKD\LlmsTxt\Api\Data\SectionInterface"
+                type="RKD\LlmsTxt\Model\Data\Section"/>
+
+    <preference for="RKD\LlmsTxt\Api\Data\GenerationResultInterface"
+                type="RKD\LlmsTxt\Model\Data\GenerationResult"/>
+
+    <!-- Register section providers with the Generator -->
+    <type name="RKD\LlmsTxt\Model\Generator">
+        <arguments>
+            <argument name="sectionProviders" xsi:type="array">
+                <item name="metadata" xsi:type="object">RKD\LlmsTxt\Model\Section\MetadataProvider</item>
+                <item name="cms_pages" xsi:type="object">RKD\LlmsTxt\Model\Section\CmsPageProvider</item>
+                <item name="categories" xsi:type="object">RKD\LlmsTxt\Model\Section\CategoryProvider</item>
+                <item name="products" xsi:type="object">RKD\LlmsTxt\Model\Section\ProductProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Robots.txt plugin: append llms.txt references -->
+    <type name="Magento\Robots\Model\Robots">
+        <plugin name="rkd_llmstxt_robots" type="RKD\LlmsTxt\Plugin\RobotsTxtPlugin" sortOrder="100"/>
+    </type>
+
+    <!-- Router registered in etc/frontend/di.xml (frontend scope only) -->
+
+    <!-- Console command registration -->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="rkd_llmstxt_generate" xsi:type="object">RKD\LlmsTxt\Console\Command\GenerateCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

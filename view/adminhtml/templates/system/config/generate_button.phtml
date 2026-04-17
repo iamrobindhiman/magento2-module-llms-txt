@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var \RKD\LlmsTxt\Block\Adminhtml\System\Config\GenerateButton $block */
+$generateUrl = $block->getGenerateUrl();
+$buttonId = 'rkd_llmstxt_generate_btn';
+$resultId = 'rkd_llmstxt_generate_result';
+?>
+
+<button id="<?= $block->escapeHtmlAttr($buttonId) ?>"
+        type="button"
+        class="action-default scalable"
+        title="<?= $block->escapeHtmlAttr(__('Generate Now')) ?>">
+    <span><?= $block->escapeHtml(__('Generate Now')) ?></span>
+</button>
+<div id="<?= $block->escapeHtmlAttr($resultId) ?>" style="margin-top: 10px;"></div>
+
+<script>
+    require(['jquery'], function ($) {
+        $('#<?= $block->escapeJs($buttonId) ?>').on('click', function () {
+            var $btn = $(this);
+            var $result = $('#<?= $block->escapeJs($resultId) ?>');
+
+            $btn.prop('disabled', true).text('<?= $block->escapeJs(__('Generating...')) ?>');
+            $result.html('');
+
+            $.ajax({
+                url: '<?= $block->escapeJs($generateUrl) ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    form_key: FORM_KEY
+                },
+                success: function (response) {
+                    $btn.prop('disabled', false).find('span').text('<?= $block->escapeJs(__('Generate Now')) ?>');
+
+                    if (response.success) {
+                        $result.html(
+                            '<div class="message message-success">' +
+                            '<span>Generated successfully! ' +
+                            'Sections: ' + response.sections_count +
+                            ' | Products: ' + response.products_count +
+                            ' | Size: ' + response.file_size +
+                            ' | Duration: ' + response.duration + 's</span></div>'
+                        );
+                    } else {
+                        $result.html(
+                            '<div class="message message-error">' +
+                            '<span>Generation failed: ' + (response.message || 'Unknown error') + '</span></div>'
+                        );
+                    }
+                },
+                error: function () {
+                    $btn.prop('disabled', false).find('span').text('<?= $block->escapeJs(__('Generate Now')) ?>');
+                    $result.html(
+                        '<div class="message message-error"><span>Request failed. Check logs.</span></div>'
+                    );
+                }
+            });
+        });
+    });
+</script>

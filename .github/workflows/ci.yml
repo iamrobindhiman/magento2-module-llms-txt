@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  phpcs:
+    name: Magento 2 Coding Standard
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict --no-check-publish
+
+      - name: Install Magento Coding Standard
+        run: composer global require --dev magento/magento-coding-standard
+
+      - name: Run PHPCS
+        run: ~/.composer/vendor/bin/phpcs --standard=Magento2 --extensions=php --severity=8 .
+
+  syntax:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: PHP Lint all files
+        run: find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 -P4 php -l

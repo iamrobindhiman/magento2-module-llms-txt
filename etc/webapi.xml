@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/rkd/llmstxt/generate" method="POST">
+        <service class="RKD\LlmsTxt\Api\LlmsTxtGeneratorInterface" method="generate"/>
+        <resources>
+            <resource ref="RKD_LlmsTxt::generate"/>
+        </resources>
+    </route>
+
+    <route url="/V1/rkd/llmstxt/preview" method="GET">
+        <service class="RKD\LlmsTxt\Api\LlmsTxtGeneratorInterface" method="preview"/>
+        <resources>
+            <resource ref="RKD_LlmsTxt::preview"/>
+        </resources>
+    </route>
+
+    <route url="/V1/rkd/llmstxt/validate" method="GET">
+        <service class="RKD\LlmsTxt\Api\LlmsTxtGeneratorInterface" method="validate"/>
+        <resources>
+            <resource ref="RKD_LlmsTxt::validate"/>
+        </resources>
+    </route>
+</routes>

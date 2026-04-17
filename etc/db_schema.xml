@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="rkd_llmstxt_generation_log" resource="default" engine="innodb"
+           comment="LLMs.txt Generation Log">
+        <column xsi:type="int" name="log_id" unsigned="true" nullable="false"
+                identity="true" comment="Log ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false"
+                comment="Store ID"/>
+        <column xsi:type="varchar" name="file_type" nullable="false" length="20"
+                comment="File Type (llms_txt or llms_full_txt)"/>
+        <column xsi:type="int" name="sections_count" unsigned="true" nullable="false"
+                default="0" comment="Number of sections generated"/>
+        <column xsi:type="int" name="products_count" unsigned="true" nullable="false"
+                default="0" comment="Number of products included"/>
+        <column xsi:type="int" name="file_size_bytes" unsigned="true" nullable="false"
+                default="0" comment="Generated file size in bytes"/>
+        <column xsi:type="varchar" name="generation_trigger" nullable="false" length="50"
+                comment="Trigger (manual, cron, api, cli)"/>
+        <column xsi:type="decimal" name="duration_seconds" scale="2" precision="10"
+                nullable="false" default="0" comment="Generation duration in seconds"/>
+        <column xsi:type="text" name="validation_errors" nullable="true"
+                comment="JSON array of validation errors"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="20"
+                default="success" comment="Status (success, error, partial)"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false"
+                nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+        <index referenceId="RKD_LLMSTXT_LOG_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="RKD_LLMSTXT_LOG_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+</schema>

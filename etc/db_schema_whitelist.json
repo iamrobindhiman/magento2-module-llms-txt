@@ -1,0 +1,24 @@
+{
+    "rkd_llmstxt_generation_log": {
+        "column": {
+            "log_id": true,
+            "store_id": true,
+            "file_type": true,
+            "sections_count": true,
+            "products_count": true,
+            "file_size_bytes": true,
+            "generation_trigger": true,
+            "duration_seconds": true,
+            "validation_errors": true,
+            "status": true,
+            "created_at": true
+        },
+        "index": {
+            "RKD_LLMSTXT_GENERATION_LOG_STORE_ID": true,
+            "RKD_LLMSTXT_GENERATION_LOG_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
