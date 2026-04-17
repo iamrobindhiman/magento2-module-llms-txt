@@ -11,6 +11,7 @@ jobs:
     name: Magento 2 Coding Standard
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-version: ['8.1', '8.2', '8.3']
 
@@ -28,16 +29,28 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict --no-check-publish
 
+      - name: Allow required Composer plugins globally
+        run: |
+          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global config --no-plugins allow-plugins.magento/composer-dependency-version-audit-plugin true
+          composer global config --no-plugins allow-plugins.magento/composer-root-update-plugin true
+          composer global config --no-plugins allow-plugins.magento/inventory-composer-installer true
+
       - name: Install Magento Coding Standard
         run: composer global require --dev magento/magento-coding-standard
 
-      - name: Run PHPCS
-        run: ~/.composer/vendor/bin/phpcs --standard=Magento2 --extensions=php --severity=8 .
+      - name: Resolve composer global bin dir
+        id: composer-bin
+        run: echo "path=$(composer global config bin-dir --absolute --quiet)" >> "$GITHUB_OUTPUT"
+
+      - name: Run PHPCS against Magento2 standard
+        run: ${{ steps.composer-bin.outputs.path }}/phpcs --standard=Magento2 --extensions=php --severity=8 -p .
 
   syntax:
     name: PHP Syntax Check
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-version: ['8.1', '8.2', '8.3']
 
