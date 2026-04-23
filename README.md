@@ -147,7 +147,7 @@ After generation, the files are served at:
 
 ### Performance
 
-The module uses **cursor-based pagination** (`WHERE entity_id > :lastId` — no OFFSET performance cliff) combined with **PHP generators** (`yield`) so each batch is processed and released before the next is loaded. Batch-level memory is bounded; total memory scales with catalog size because the final output is assembled before writing.
+The module uses **cursor-based pagination** (`WHERE entity_id > :lastId` — no OFFSET performance cliff) combined with **PHP generators** (`yield`) so each batch is processed and released before the next is loaded. Batch-level memory is bounded; total memory scales with catalog size because the final output is assembled before writing. Write-up of the technique: [Paginating Magento catalogs without OFFSET](https://devrob.in/blog/paginating-magento-catalogs-without-offset).
 
 | Catalog Size | Peak Memory | Time | Recommended PHP `memory_limit` |
 |--------------|-------------|------|--------------------------------|
@@ -233,4 +233,4 @@ MIT License. See [LICENSE.txt](LICENSE.txt).
 
 - **Bug reports and feature requests:** [GitHub Issues](https://github.com/iamrobindhiman/magento2-module-llms-txt/issues)
 - **Questions and discussion:** [GitHub Discussions](https://github.com/iamrobindhiman/magento2-module-llms-txt/discussions)
-- **Author:** [Robin Dhiman](https://github.com/iamrobindhiman)
+- **Author:** [Robin Dhiman](https://devrob.in) — senior web engineer, fifteen years in Magento 2 and Hyvä. More writing at [devrob.in/blog](https://devrob.in/blog); contact hello@devrob.in for engagements.
